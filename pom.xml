@@ -59,7 +59,24 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-	</dependencies>
+	  <dependency>
+		  <groupId>org.aspectj</groupId>
+		  <artifactId>aspectjrt</artifactId>
+		  <version>1.8.9</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.junit.jupiter</groupId>
+		  <artifactId>junit-jupiter</artifactId>
+		  <version>RELEASE</version>
+		  <scope>compile</scope>
+	  </dependency>
+	  <dependency>
+		  <groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+		  <version>4.12</version>
+		  <scope>compile</scope>
+	  </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -76,6 +93,30 @@
           <warSourceDirectory>WebContent</warSourceDirectory>
         </configuration>
       </plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>aspectj-maven-plugin</artifactId>
+			<version>1.7</version>
+			<configuration>
+				<complianceLevel>1.8</complianceLevel>
+				<source>1.8</source>
+				<target>1.8</target>
+				<showWeaveInfo>true</showWeaveInfo>
+				<verbose>true</verbose>
+				<Xlint>ignore</Xlint>
+				<encoding>UTF-8 </encoding>
+			</configuration>
+			<executions>
+				<execution>
+					<goals>
+						<!-- use this goal to weave all your main classes -->
+						<goal>compile</goal>
+						<!-- use this goal to weave all your test classes -->
+						<goal>test-compile</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
     </plugins>
   </build>
 </project>

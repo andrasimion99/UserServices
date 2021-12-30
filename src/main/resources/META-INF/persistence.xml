@@ -4,12 +4,17 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 	version="2.1">
-	<persistence-unit name="users">
+	<persistence-unit name="users" transaction-type="RESOURCE_LOCAL">
+		<non-jta-data-source>taip_conn</non-jta-data-source>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/users?useSSL=true" />
-			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="admin" />
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+<!--			<property name="javax.persistence.jdbc.url"-->
+<!--				value="jdbc:mysql://localhost:3306/users?useSSL=false" />-->
+<!--			<property name="javax.persistence.jdbc.user" value="root" />-->
+<!--			<property name="javax.persistence.jdbc.password"-->
+<!--				value="admin" />-->
+<!--			<property name="javax.persistence.jdbc.driver"-->
+<!--				value="com.mysql.jdbc.Driver" />-->
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57Dialect"/>

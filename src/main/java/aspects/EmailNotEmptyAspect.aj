@@ -11,7 +11,6 @@ public aspect EmailNotEmptyAspect {
 
     User around(User user, UserDao userDao) :
             checkNotEmpty(user, userDao) {
-        int x = 1/0;
         if(user.getEmail().isEmpty()) {
             return null;
         }

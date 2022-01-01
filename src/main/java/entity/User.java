@@ -1,13 +1,13 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
+@NamedQueries({
+		@NamedQuery(name = "User.findAll", query = "SELECT u from User u"),
+		@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u where u.email = ?1")
+})
 public class User {
 	private Integer id;
 	private String name;
@@ -22,6 +22,14 @@ public class User {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public User(Integer id, String name, String password, String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.email = email;
 	}
 
 	public User(String name, String password, String email) {
@@ -64,4 +72,13 @@ public class User {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", password='" + password + '\'' +
+				", email='" + email + '\'' +
+				'}';
+	}
 }

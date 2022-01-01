@@ -26,41 +26,41 @@ import servlets.DeleteServlet;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteServletTest {
-	DeleteServlet deleteServlet;
-	UserDto userDto;
-	@Mock
-	UserFacade userFacade;
-	@Mock
-	HttpServletRequest request;
-	@Mock
-	HttpServletResponse response;
-	@Mock
-	PrintWriter printWriter;
-	
-	@Before
-	public void setup() {
-		deleteServlet = new DeleteServlet(userFacade);
-		userDto = new UserDto();
-	}
-	
-	@Test
-	public void givenDeleteUser_whenIdIsInvalid_thenStatusIsBadRequest() throws ServletException, IOException {
-		when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
-		doThrow(new EntityNotFoundException()).when(userFacade).deleteUser(TestConstants.ID_INT);
-		when(response.getWriter()).thenReturn(printWriter);
+    DeleteServlet deleteServlet;
+    UserDto userDto;
+    @Mock
+    UserFacade userFacade;
+    @Mock
+    HttpServletRequest request;
+    @Mock
+    HttpServletResponse response;
+    @Mock
+    PrintWriter printWriter;
 
-		deleteServlet.doDelete(request, response);
+    @Before
+    public void setup() {
+        deleteServlet = new DeleteServlet(userFacade);
+        userDto = new UserDto();
+    }
 
-		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	}
-	
-	@Test
-	public void givenDeleteUser_whenIdIsValid_thenStatusIsNoContent() throws ServletException, IOException {
-		when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
+    @Test
+    public void givenDeleteUser_whenIdIsInvalid_thenStatusIsBadRequest() throws ServletException, IOException {
+        when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
+        doThrow(new EntityNotFoundException()).when(userFacade).deleteUser(TestConstants.ID_INT);
+        when(response.getWriter()).thenReturn(printWriter);
 
-		deleteServlet.doDelete(request, response);
+        deleteServlet.doDelete(request, response);
 
-		verify(response).setStatus(HttpServletResponse.SC_NO_CONTENT);
-	}
-	
+        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    @Test
+    public void givenDeleteUser_whenIdIsValid_thenStatusIsNoContent() throws ServletException, IOException {
+        when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
+
+        deleteServlet.doDelete(request, response);
+
+        verify(response).setStatus(HttpServletResponse.SC_NO_CONTENT);
+    }
+
 }

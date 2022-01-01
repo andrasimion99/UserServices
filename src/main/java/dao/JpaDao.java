@@ -1,50 +1,54 @@
 package dao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Optional;
 
-public class JpaDao<T> {
-	private EntityManagerFactory entityManagerFactory;
+public class JpaDao<T> implements GenericDAO<T> {
+    @PersistenceContext(name = "users")
+    EntityManager entityManager;
 
-	public JpaDao(EntityManagerFactory entityManagerFactory) {
-		this.entityManagerFactory = entityManagerFactory;
-	}
+    public JpaDao() {
+    }
 
-	public T create(T t) {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-		entityManager.persist(t);
-		entityManager.flush();
-		entityManager.refresh(t);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		return t;
-	}
+    public JpaDao(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
-	public T update(T t) throws EntityNotFoundException{
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-		t = entityManager.merge(t);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		return t;
-	}
+    @Override
+    public T create(T t) {
+        entityManager.persist(t);
+        entityManager.flush();
+        entityManager.refresh(t);
+        return t;
+    }
 
-	public T find(Class<T> type, Object id) {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		T entity = entityManager.find(type, id);
-		entityManager.close();
-		return entity;
-	}
+    @Override
+    public T update(T t) throws EntityNotFoundException {
+        return entityManager.merge(t);
+    }
 
-	public void delete(Class<T> type, Object id) throws EntityNotFoundException {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-		Object reference = entityManager.getReference(type, id);
-		entityManager.remove(reference);
-		entityManager.getTransaction().commit();	
-		entityManager.close();
-	}
+    @Override
+    public T get(Class<T> entityClass, Object id) {
+        return entityManager.find(entityClass, id);
+    }
 
+    @Override
+    public void delete(Class<T> entityClass, Object id) throws EntityNotFoundException {
+        Object reference = entityManager.getReference(entityClass, id);
+        entityManager.remove(reference);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Optional<T> getByProperty(String query, String prop) {
+        return Optional.of((T) entityManager.createNamedQuery(query)
+                .setParameter(1, prop).setMaxResults(1).getSingleResult());
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> getAll(String query) {
+        return entityManager.createNamedQuery(query).getResultList();
+    }
 }

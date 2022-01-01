@@ -21,19 +21,19 @@ import facade.UserFacade;
 public class UserInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserFacade userFacade;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public UserInfoServlet() {
     	userFacade = new UserFacade();
     }
-    
+
     public UserInfoServlet(UserFacade userFacade) {
     	this.userFacade = userFacade;
     }
 
-	
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter(ParametersConstants.ID);
 		if (id != null) {
@@ -51,6 +51,6 @@ public class UserInfoServlet extends HttpServlet {
 		}
 	}
 
-	
+
 
 }

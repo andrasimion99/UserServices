@@ -26,42 +26,42 @@ import servlets.UserInfoServlet;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserInfoServletTest {
-	UserInfoServlet userInfoServlet;
-	UserDto userDto;
-	@Mock
-	UserFacade userFacade;
-	@Mock
-	HttpServletRequest request;
-	@Mock
-	HttpServletResponse response;
-	@Mock
-	PrintWriter printWriter;
+    UserInfoServlet userInfoServlet;
+    UserDto userDto;
+    @Mock
+    UserFacade userFacade;
+    @Mock
+    HttpServletRequest request;
+    @Mock
+    HttpServletResponse response;
+    @Mock
+    PrintWriter printWriter;
 
-	@Before
-	public void setup() {
-		userInfoServlet = new UserInfoServlet(userFacade);
-		userDto = new UserDto();
-	}
+    @Before
+    public void setup() {
+        userInfoServlet = new UserInfoServlet(userFacade);
+        userDto = new UserDto();
+    }
 
-	@Test
-	public void givenGetUserData_whenIdIsInvalid_thenStatusIsBadRequest() throws ServletException, IOException {
-		when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
-		doThrow(new EntityNotFoundException()).when(userFacade).getById(TestConstants.ID_INT);
-		when(response.getWriter()).thenReturn(printWriter);
+    @Test
+    public void givenGetUserData_whenIdIsInvalid_thenStatusIsBadRequest() throws ServletException, IOException {
+        when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
+        doThrow(new EntityNotFoundException()).when(userFacade).getById(TestConstants.ID_INT);
+        when(response.getWriter()).thenReturn(printWriter);
 
-		userInfoServlet.doGet(request, response);
+        userInfoServlet.doGet(request, response);
 
-		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	}
-	
-	@Test
-	public void givenGetUserData_whenIdIsValid_thenStatusIsOk() throws ServletException, IOException {
-		when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
-		when(userFacade.getById(TestConstants.ID_INT)).thenReturn(userDto);
-		when(response.getWriter()).thenReturn(printWriter);
+        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
 
-		userInfoServlet.doGet(request, response);
+    @Test
+    public void givenGetUserData_whenIdIsValid_thenStatusIsOk() throws ServletException, IOException {
+        when(request.getParameter(ParametersConstants.ID)).thenReturn(TestConstants.ID);
+        when(userFacade.getById(TestConstants.ID_INT)).thenReturn(userDto);
+        when(response.getWriter()).thenReturn(printWriter);
 
-		verify(response).setStatus(HttpServletResponse.SC_OK);
-	}
+        userInfoServlet.doGet(request, response);
+
+        verify(response).setStatus(HttpServletResponse.SC_OK);
+    }
 }

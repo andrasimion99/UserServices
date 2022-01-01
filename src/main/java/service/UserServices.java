@@ -1,33 +1,33 @@
 package service;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
-
 import dao.UserDao;
 import entity.User;
 
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+
 public class UserServices {
-	private UserDao userDao;
 
-	public UserServices() {
-		userDao = UserDao.getUserDao();
-	}
+    @Inject
+    private UserDao userDao;
 
-	public UserServices(UserDao dao) {
-		this.userDao = dao;
-	}
+    public UserServices() {
+    }
 
-	public User getById(Integer id) throws EntityNotFoundException{
-		return userDao.get(id);
-	}
-	
-	public List<User> getAllUsers() {
-		return userDao.getAllUsers();
-	}
-	
-	public void deleteUser(Integer id) throws EntityNotFoundException{
-		userDao.delete(id);
-	}
+    public UserServices(UserDao dao) {
+        this.userDao = dao;
+    }
+
+    public User getById(Integer id) throws EntityNotFoundException {
+        return userDao.get(id);
+    }
+
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
+    }
+
+    public void deleteUser(Integer id) throws EntityNotFoundException {
+        userDao.delete(id);
+    }
 }
